@@ -1,0 +1,188 @@
+﻿<mahApps:MetroWindow x:Class="TFSBuildDefinitionHelper.MainWindow"
+					 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+					 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					 xmlns:lib="clr-namespace:TFSBuildDefinitionHelper"
+					 xmlns:mahApps="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+					 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+					 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+					 mc:Ignorable="d"
+					 Title="Build Definition Mapper"
+					 MinHeight="500"
+					 Style="{StaticResource {x:Type mahApps:MetroWindow}}"
+					 SizeToContent="Manual"
+					 Width="800"
+					 Height="600"
+					 DataContext="{Binding Source={StaticResource Locator}, Path=Main}">
+
+	<mahApps:MetroWindow.RightWindowCommands>
+		<mahApps:WindowCommands>
+			<Button Command="{Binding SettingsCommand}">
+				<StackPanel Orientation="Horizontal">
+					<Rectangle Width="20"
+							   Height="20"
+							   Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
+						<Rectangle.OpacityMask>
+							<VisualBrush Stretch="Fill"
+										 Visual="{StaticResource appbar_settings}" />
+						</Rectangle.OpacityMask>
+					</Rectangle>
+					<TextBlock Margin="4 0 0 0"
+							   VerticalAlignment="Center"
+							   Text="settings" />
+				</StackPanel>
+			</Button>
+		</mahApps:WindowCommands>
+	</mahApps:MetroWindow.RightWindowCommands>
+
+	
+		
+	<Grid Margin="0">
+
+		<Grid.RowDefinitions>
+			<!-- Selections -->
+			<RowDefinition Height="65px" />
+			<!-- Source Settings -->
+			<RowDefinition />
+			<!-- GridSplitter -->
+			<RowDefinition Height="4" />
+			<!-- Solution Paths -->
+			<RowDefinition />
+			<!-- Command Buttons -->
+			<RowDefinition Height="50px" />
+		</Grid.RowDefinitions>
+
+		<DockPanel>
+			<StackPanel DockPanel.Dock="Left"
+						Margin="10"
+						HorizontalAlignment="Left">
+				<TextBlock>Build Definition:</TextBlock>
+				<ComboBox Width="200"
+						  DisplayMemberPath="Name"
+						  ItemsSource="{Binding AvailibleBuildDefinitions}"
+						  SelectedItem="{Binding SelectedBuildDefinition}"
+						  ToolTip="{Binding RelativeSource={RelativeSource Self}, Path=SelectedItem.Name}" />
+			</StackPanel>
+
+			<StackPanel DockPanel.Dock="Left"
+						Margin="10"
+						HorizontalAlignment="Left">
+				<TextBlock>Branch:</TextBlock>
+				<ComboBox Width="300"
+						  DisplayMemberPath="Properties.RootItem.Item"
+						  ItemsSource="{Binding AvailibleBranches}"
+						  SelectedItem="{Binding SelectedBranch}"
+						  ToolTip="{Binding RelativeSource={RelativeSource Self}, Path=SelectedItem.Properties.RootItem.Item}" />
+			</StackPanel>
+		</DockPanel>
+
+		<GroupBox Header="Source Settings"
+				  Grid.Row="1">
+			<DataGrid ItemsSource="{Binding WorkingFolders}"
+					  CanUserAddRows="False"
+					  AutoGenerateColumns="False"
+					  AlternatingRowBackground="PaleTurquoise">
+				<DataGrid.Columns>
+
+					<DataGridTemplateColumn>
+						<DataGridTemplateColumn.CellTemplate>
+							<DataTemplate>
+								<CheckBox Margin="2,0"
+										  IsChecked="{Binding IncludeInUpdate}"></CheckBox>
+							</DataTemplate>
+						</DataGridTemplateColumn.CellTemplate>
+					</DataGridTemplateColumn>
+
+					<DataGridTextColumn Header="Status"
+										Binding="{Binding WorkspaceMapping.MappingType}"
+										IsReadOnly="True" />
+
+					<DataGridTextColumn Header="Folder"
+										IsReadOnly="True"
+										Binding="{Binding WorkspaceMapping.ServerItem}" />
+
+					<DataGridTemplateColumn Header="Current Branch">
+						<DataGridTemplateColumn.CellTemplate>
+							<DataTemplate>
+								<TextBlock Margin="2,0"
+										   Text="{Binding CurrentBranch, Converter={StaticResource ConverterResource_WorkingPathConverter}}"
+										   ToolTip="{Binding CurrentBranch}" />
+							</DataTemplate>
+						</DataGridTemplateColumn.CellTemplate>
+					</DataGridTemplateColumn>
+
+					<DataGridTemplateColumn Header="New Branch">
+						<DataGridTemplateColumn.CellTemplate>
+							<DataTemplate>
+								<ComboBox Margin="2,0"
+										  ItemsSource="{Binding Source={StaticResource Locator}, Path=Main.AvailibleBranches}"
+										  SelectedItem="{Binding NewBranch, UpdateSourceTrigger=PropertyChanged}"
+										  ToolTip="{Binding NewBranch.Properties.RootItem.Item}">
+									<ComboBox.ItemTemplate>
+										<DataTemplate>
+											<TextBlock Text="{Binding Properties.RootItem.Item, Converter={StaticResource ConverterResource_WorkingPathConverter}}"
+													   ToolTip="{Binding Properties.RootItem.Item}" />
+										</DataTemplate>
+									</ComboBox.ItemTemplate>
+								</ComboBox>
+							</DataTemplate>
+						</DataGridTemplateColumn.CellTemplate>
+					</DataGridTemplateColumn>
+
+					<DataGridTextColumn Header="New Folder"
+										Binding="{Binding NewServerItem}" />
+				</DataGrid.Columns>
+			</DataGrid>
+		</GroupBox>
+
+		<GridSplitter Grid.Row="2"
+					  Margin="5,0"
+					  HorizontalAlignment="Stretch"
+					  VerticalAlignment="Stretch" />
+
+		<GroupBox Header="Solution Build Paths"
+				  Grid.Row="3">
+			<DataGrid ItemsSource="{Binding ProjectsToBuild}"
+					  CanUserAddRows="False"
+					  AutoGenerateColumns="False"
+					  AlternatingRowBackground="PaleTurquoise">
+				<DataGrid.Columns>
+					<DataGridTextColumn Header="Project"
+										IsReadOnly="True"
+										Binding="{Binding OriginalPath, Converter={StaticResource ConverterResource_WorkingPathConverter}}" />
+					<DataGridTemplateColumn Header="Current Branch">
+						<DataGridTemplateColumn.CellTemplate>
+							<DataTemplate>
+								<TextBlock Margin="2,0"
+										   Text="{Binding CurrentBranch, Converter={StaticResource ConverterResource_WorkingPathConverter}}"
+										   ToolTip="{Binding CurrentBranch}" />
+							</DataTemplate>
+						</DataGridTemplateColumn.CellTemplate>
+					</DataGridTemplateColumn>
+					<DataGridTextColumn Header="Current Path"
+										IsReadOnly="True"
+										Binding="{Binding OriginalPath}" />
+					<DataGridTextColumn Header="New Path"
+										Binding="{Binding NewPath}" />
+				</DataGrid.Columns>
+			</DataGrid>
+		</GroupBox>
+
+		<DockPanel Grid.Row="4"
+				   Margin="10"
+				   LastChildFill="False">
+			<Button Content="Update"
+					DockPanel.Dock="Right"
+					Width="100"
+					Height="30"
+					Command="{Binding UpdateMappingsCommand}"
+					Style="{StaticResource AccentedSquareButtonStyle}"
+					BorderThickness="0" />
+		</DockPanel>
+
+
+
+
+
+
+	</Grid>
+</mahApps:MetroWindow>
