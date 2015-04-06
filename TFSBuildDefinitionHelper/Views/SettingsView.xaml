@@ -57,7 +57,7 @@
 						Margin="5">
 				<TextBlock><Run Text="Name or URL of Team Foundation Server:" /></TextBlock>
 				<TextBox Text="{Binding TfsUri, UpdateSourceTrigger=PropertyChanged}" 
-						 mahApps:TextBoxHelper.Watermark="http://acusource:8080/tfs/AcumenPM"
+						 mahApps:TextBoxHelper.Watermark=""
 						 mahApps:TextBoxHelper.ClearTextButton="True"/>
 			</StackPanel>
 
