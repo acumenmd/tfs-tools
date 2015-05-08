@@ -74,7 +74,7 @@ namespace TFSHelperLibary
 			// get liset of branches
 			var vc = _collection.GetService<VersionControlServer>();
 			var branches = vc.QueryRootBranchObjects(RecursionType.Full)
-				.Where(b => !b.Properties.RootItem.IsDeleted)
+				//.Where(b => !b.Properties.RootItem.IsDeleted)
 				.OrderBy(b => b.Properties.RootItem.Item);
 			return branches.ToList();
 		}
