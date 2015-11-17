@@ -1,11 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TFSHelperLibrary", "TFSHelperLibrary\TFSHelperLibrary.csproj", "{A8D12A4A-C5E6-4F2B-9C15-F26615BB505F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleTester", "ConsoleTester\ConsoleTester.csproj", "{715EE505-89BD-4F18-8F56-97725F676AAA}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A8D12A4A-C5E6-4F2B-9C15-F26615BB505F} = {A8D12A4A-C5E6-4F2B-9C15-F26615BB505F}
+		{CF34A7B0-8B9C-4FE9-92DE-00E1BA51893D} = {CF34A7B0-8B9C-4FE9-92DE-00E1BA51893D}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TFSBuildDefinitionHelper", "TFSBuildDefinitionHelper\TFSBuildDefinitionHelper.csproj", "{CF34A7B0-8B9C-4FE9-92DE-00E1BA51893D}"
 EndProject
